@@ -173,6 +173,22 @@
                 </a>
             @endif
 
+            {{-- Save / Favourite --}}
+            @auth
+                <button type="button" id="fav-btn"
+                        data-url="{{ route('ads.favorite', $ad) }}"
+                        class="flex items-center justify-center gap-2 w-full mt-2 py-2.5 rounded-lg border-2 font-semibold transition
+                               {{ $isFavorited ? 'border-red-400 bg-red-50 text-red-500' : 'border-gray-300 text-gray-600 hover:border-red-300 hover:text-red-400' }}">
+                    <span id="fav-icon">{{ $isFavorited ? '❤️' : '🤍' }}</span>
+                    <span id="fav-label">{{ $isFavorited ? 'Saved' : 'Save Ad' }}</span>
+                </button>
+            @else
+                <a href="{{ route('login') }}"
+                   class="flex items-center justify-center gap-2 w-full mt-2 py-2.5 rounded-lg border-2 border-gray-300 text-gray-600 hover:border-red-300 hover:text-red-400 font-semibold transition">
+                    🤍 Save Ad
+                </a>
+            @endauth
+
             <p class="text-xs text-gray-400 mt-3 text-center">Merkei Mart හරහා දෙස් කළා යැයි කියන්න</p>
         </div>
 
@@ -279,5 +295,30 @@
         if (e.key === 'ArrowRight') goTo(current + 1);
     });
 })();
+
+// Favorite toggle
+const favBtn = document.getElementById('fav-btn');
+if (favBtn) {
+    favBtn.addEventListener('click', async function () {
+        try {
+            const res = await fetch(this.dataset.url, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').content,
+                    'Accept': 'application/json',
+                },
+            });
+            if (!res.ok) return;
+            const data = await res.json();
+            document.getElementById('fav-icon').textContent  = data.favorited ? '❤️' : '🤍';
+            document.getElementById('fav-label').textContent = data.favorited ? 'Saved' : 'Save Ad';
+            this.classList.toggle('border-red-400',   data.favorited);
+            this.classList.toggle('bg-red-50',        data.favorited);
+            this.classList.toggle('text-red-500',     data.favorited);
+            this.classList.toggle('border-gray-300',  !data.favorited);
+            this.classList.toggle('text-gray-600',    !data.favorited);
+        } catch (err) { /* silent */ }
+    });
+}
 </script>
 @endpush

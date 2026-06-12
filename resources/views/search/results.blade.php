@@ -168,10 +168,10 @@
         @else
             @foreach($results as $ad)
                 <a href="{{ route('ads.show', $ad) }}"
-                   class="flex gap-4 bg-white rounded-xl shadow hover:shadow-md transition p-4 group">
+                   class="flex gap-4 bg-white rounded-xl shadow hover:shadow-md transition p-4 group relative">
 
                     {{-- Thumbnail --}}
-                    <div class="w-28 h-24 flex-shrink-0 rounded-lg overflow-hidden bg-gray-100 flex items-center justify-center">
+                    <div class="w-28 h-24 flex-shrink-0 rounded-lg overflow-hidden bg-gray-100 flex items-center justify-center relative">
                         @if($ad->primaryImage)
                             <img src="{{ $ad->primaryImage->url }}"
                                  alt="{{ $ad->title }}"
@@ -179,6 +179,14 @@
                         @else
                             <span class="text-4xl">{{ $ad->category?->icon ?? '📦' }}</span>
                         @endif
+                        @auth
+                            <button type="button"
+                                    class="fav-card-btn absolute bottom-1 right-1 w-6 h-6 rounded-full bg-white/90 shadow flex items-center justify-center text-xs hover:bg-white transition z-10"
+                                    data-url="{{ route('ads.favorite', $ad) }}"
+                                    title="{{ in_array($ad->id, $favoriteIds) ? 'Remove from saved' : 'Save ad' }}">
+                                {{ in_array($ad->id, $favoriteIds) ? '❤️' : '🤍' }}
+                            </button>
+                        @endauth
                     </div>
 
                     {{-- Details --}}
@@ -241,6 +249,26 @@ document.getElementById('sort-select').addEventListener('change', function () {
     else url.searchParams.delete('sort');
     url.searchParams.delete('page');
     window.location.href = url.toString();
+});
+
+document.querySelectorAll('.fav-card-btn').forEach(btn => {
+    btn.addEventListener('click', async function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        try {
+            const res = await fetch(this.dataset.url, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').content,
+                    'Accept': 'application/json',
+                },
+            });
+            if (!res.ok) return;
+            const data = await res.json();
+            this.textContent = data.favorited ? '❤️' : '🤍';
+            this.title = data.favorited ? 'Remove from saved' : 'Save ad';
+        } catch (err) { /* silent */ }
+    });
 });
 </script>
 @endpush

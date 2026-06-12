@@ -40,9 +40,12 @@ class SearchController extends Controller
             ->paginate(15)
             ->withQueryString();
 
-        $categories = Category::roots()->active()->orderBy('sort_order')->get();
-        $districts  = District::orderBy('name')->get();
+        $categories  = Category::roots()->active()->orderBy('sort_order')->get();
+        $districts   = District::orderBy('name')->get();
+        $favoriteIds = auth()->check()
+            ? auth()->user()->favorites()->pluck('ad_id')->all()
+            : [];
 
-        return view('search.results', compact('results', 'q', 'categories', 'districts', 'hitCounts'));
+        return view('search.results', compact('results', 'q', 'categories', 'districts', 'hitCounts', 'favoriteIds'));
     }
 }

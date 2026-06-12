@@ -150,6 +150,14 @@
                                     TOP AD
                                 </span>
                             @endif
+                            @auth
+                                <button type="button"
+                                        class="fav-card-btn absolute top-2 right-2 w-8 h-8 rounded-full bg-white/80 shadow flex items-center justify-center text-base hover:bg-white transition z-10"
+                                        data-url="{{ route('ads.favorite', $ad) }}"
+                                        title="{{ in_array($ad->id, $favoriteIds) ? 'Remove from saved' : 'Save ad' }}">
+                                    {{ in_array($ad->id, $favoriteIds) ? '❤️' : '🤍' }}
+                                </button>
+                            @endauth
                         </div>
                         <div class="p-3 flex-1 flex flex-col">
                             <h3 class="font-medium line-clamp-2 text-sm">{{ $ad->title }}</h3>
@@ -186,6 +194,26 @@ document.getElementById('sort-select').addEventListener('change', function () {
     else url.searchParams.delete('sort');
     url.searchParams.delete('page');
     window.location.href = url.toString();
+});
+
+document.querySelectorAll('.fav-card-btn').forEach(btn => {
+    btn.addEventListener('click', async function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        try {
+            const res = await fetch(this.dataset.url, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').content,
+                    'Accept': 'application/json',
+                },
+            });
+            if (!res.ok) return;
+            const data = await res.json();
+            this.textContent = data.favorited ? '❤️' : '🤍';
+            this.title = data.favorited ? 'Remove from saved' : 'Save ad';
+        } catch (err) { /* silent */ }
+    });
 });
 </script>
 @endpush

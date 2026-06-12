@@ -50,10 +50,13 @@ class AdController extends Controller implements HasMiddleware
             ->paginate(20)
             ->withQueryString();
 
-        $categories = Category::roots()->active()->orderBy('sort_order')->get();
-        $districts = District::orderBy('name')->get();
+        $categories  = Category::roots()->active()->orderBy('sort_order')->get();
+        $districts   = District::orderBy('name')->get();
+        $favoriteIds = auth()->check()
+            ? auth()->user()->favorites()->pluck('ad_id')->all()
+            : [];
 
-        return view('ads.index', compact('ads', 'categories', 'districts'));
+        return view('ads.index', compact('ads', 'categories', 'districts', 'favoriteIds'));
     }
 
     /**
@@ -136,7 +139,11 @@ class AdController extends Controller implements HasMiddleware
                 ->get();
         }
 
-        return view('ads.show', compact('ad', 'related'));
+        $isFavorited = auth()->check()
+            ? auth()->user()->favorites()->where('ad_id', $ad->id)->exists()
+            : false;
+
+        return view('ads.show', compact('ad', 'related', 'isFavorited'));
     }
 
     /**

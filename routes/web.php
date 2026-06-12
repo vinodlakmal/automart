@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\SearchController;
@@ -42,6 +43,12 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middl
 Route::get('/my-ads', [AdController::class, 'myAds'])
     ->middleware('auth')
     ->name('ads.myAds');
+
+// Saved / favourite ads.
+Route::middleware('auth')->group(function () {
+    Route::get('/favorites',           [FavoriteController::class, 'index'])->name('favorites');
+    Route::post('/ads/{ad}/favorite',  [FavoriteController::class, 'toggle'])->name('ads.favorite');
+});
 
 // Full ad resource: index, create, store, show, edit, update, destroy.
 // Auth on the write actions is enforced inside AdController (HasMiddleware).

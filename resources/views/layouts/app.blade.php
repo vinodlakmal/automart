@@ -29,6 +29,7 @@
 
             <nav class="flex items-center gap-3 text-sm">
                 @auth
+                    <a href="{{ route('favorites') }}" class="hover:underline" title="Saved Ads">❤️</a>
                     <a href="{{ route('ads.myAds') }}" class="hover:underline">මගේ දැන්වීම්</a>
                     @if(Route::has('logout'))
                         <form action="{{ route('logout') }}" method="POST">@csrf
@@ -93,6 +94,7 @@
                     <h3 class="text-sm font-semibold text-gray-800 uppercase tracking-wide mb-3">Account</h3>
                     <ul class="space-y-2 text-sm text-gray-500">
                         @auth
+                            <li><a href="{{ route('favorites') }}" class="hover:text-brand hover:underline">❤️ Saved Ads</a></li>
                             <li><a href="{{ route('ads.myAds') }}" class="hover:text-brand hover:underline">My Ads</a></li>
                             <li><a href="{{ route('ads.create') }}" class="hover:text-brand hover:underline">Post an Ad</a></li>
                             <li>
