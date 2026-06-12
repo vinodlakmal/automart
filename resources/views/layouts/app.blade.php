@@ -31,6 +31,14 @@
                 @auth
                     <a href="{{ route('favorites') }}" class="hover:underline" title="Saved Ads">❤️</a>
                     <a href="{{ route('ads.myAds') }}" class="hover:underline">මගේ දැන්වීම්</a>
+                    <a href="{{ route('profile') }}"
+                       class="flex items-center gap-1.5 bg-white/20 hover:bg-white/30 px-3 py-1.5 rounded-lg transition"
+                       title="My Profile">
+                        <span class="w-6 h-6 rounded-full bg-yellow-400 text-brand-dark font-bold text-xs flex items-center justify-center flex-shrink-0">
+                            {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+                        </span>
+                        <span class="hidden sm:inline max-w-[8rem] truncate">{{ auth()->user()->name }}</span>
+                    </a>
                     @if(Route::has('logout'))
                         <form action="{{ route('logout') }}" method="POST">@csrf
                             <button class="hover:underline">ඉවත් වන්න</button>
@@ -94,6 +102,7 @@
                     <h3 class="text-sm font-semibold text-gray-800 uppercase tracking-wide mb-3">Account</h3>
                     <ul class="space-y-2 text-sm text-gray-500">
                         @auth
+                            <li><a href="{{ route('profile') }}"   class="hover:text-brand hover:underline">My Profile</a></li>
                             <li><a href="{{ route('favorites') }}" class="hover:text-brand hover:underline">❤️ Saved Ads</a></li>
                             <li><a href="{{ route('ads.myAds') }}" class="hover:text-brand hover:underline">My Ads</a></li>
                             <li><a href="{{ route('ads.create') }}" class="hover:text-brand hover:underline">Post an Ad</a></li>

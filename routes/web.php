@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SearchController;
 use Illuminate\Support\Facades\Route;
 
@@ -48,6 +49,13 @@ Route::get('/my-ads', [AdController::class, 'myAds'])
 Route::middleware('auth')->group(function () {
     Route::get('/favorites',           [FavoriteController::class, 'index'])->name('favorites');
     Route::post('/ads/{ad}/favorite',  [FavoriteController::class, 'toggle'])->name('ads.favorite');
+});
+
+// User profile.
+Route::middleware('auth')->group(function () {
+    Route::get('/profile',          [ProfileController::class, 'edit'])->name('profile');
+    Route::put('/profile',          [ProfileController::class, 'update'])->name('profile.update');
+    Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password');
 });
 
 // Full ad resource: index, create, store, show, edit, update, destroy.
