@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -9,8 +10,8 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 
-// Home -> public ad listing.
-Route::get('/', [AdController::class, 'index'])->name('home');
+// Marketplace homepage (category sections).
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 // Authenticated user's own ads. Declared before the resource route so that
 // "/my-ads" is not swallowed by the "ads/{ad}" wildcard.

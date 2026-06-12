@@ -161,7 +161,7 @@ const ATTRIBUTE_SCHEMAS = {
         { key: 'model', label: 'මාදිලිය (Model)', type: 'text' },
         { key: 'warranty', label: 'වගකීම (Warranty)', type: 'select', options: ['Yes','No'] },
     ],
-    property: [
+    real_estate: [
         { key: 'bedrooms', label: 'නිදන කාමර', type: 'number' },
         { key: 'bathrooms', label: 'නාන කාමර', type: 'number' },
         { key: 'land_size', label: 'ඉඩම් ප්‍රමාණය (perches)', type: 'number' },
