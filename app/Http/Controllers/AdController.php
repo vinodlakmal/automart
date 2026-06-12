@@ -32,6 +32,8 @@ class AdController extends Controller implements HasMiddleware
      */
     public function index(Request $request): View
     {
+        $sort = $request->query('sort', '');
+
         $ads = Ad::query()
             ->active()
             ->with(['primaryImage', 'category', 'district', 'city'])
@@ -41,7 +43,10 @@ class AdController extends Controller implements HasMiddleware
             ->priceBetween($request->query('min_price'), $request->query('max_price'))
             ->when($request->query('condition'), fn ($q, $c) => $q->where('condition', $c))
             ->orderByDesc('is_featured')
-            ->orderByDesc('created_at')
+            ->when($sort === 'price_asc',  fn ($q) => $q->orderBy('price'))
+            ->when($sort === 'price_desc', fn ($q) => $q->orderByDesc('price'))
+            ->when($sort === 'views',      fn ($q) => $q->orderByDesc('views'))
+            ->when(! in_array($sort, ['price_asc', 'price_desc', 'views']), fn ($q) => $q->orderByDesc('created_at'))
             ->paginate(20)
             ->withQueryString();
 
