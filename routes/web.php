@@ -4,6 +4,7 @@ use App\Http\Controllers\AdController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\SearchController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +15,9 @@ use Illuminate\Support\Facades\Route;
 
 // Marketplace homepage (category sections).
 Route::get('/', [HomeController::class, 'index'])->name('home');
+
+// Search results.
+Route::get('/search', SearchController::class)->name('search');
 
 // Static pages.
 Route::get('/about',   [PageController::class, 'about'])->name('about');

@@ -8,7 +8,7 @@
     <h1 class="text-3xl sm:text-4xl font-bold">ඕනෑම දෙයක් මිලදී ගන්න, විකුණන්න, කුලියට දෙන්න</h1>
     <p class="mt-3 text-white/80">Real Estate · Vehicles · Education · Shopping & more — post your ad free.</p>
 
-    <form action="{{ route('ads.index') }}" method="GET" class="mt-6 max-w-2xl mx-auto flex">
+    <form action="{{ route('search') }}" method="GET" class="mt-6 max-w-2xl mx-auto flex">
         <input type="text" name="q" placeholder="මොනවද හොයන්නේ? (What are you looking for?)"
                class="w-full rounded-l-lg px-4 py-3 text-gray-800 focus:outline-none">
         <button class="bg-yellow-400 text-brand-dark font-semibold px-6 rounded-r-lg hover:bg-yellow-300">සොයන්න</button>

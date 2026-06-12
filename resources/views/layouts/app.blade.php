@@ -21,7 +21,7 @@
         <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
             <a href="{{ route('home') }}" class="text-2xl font-bold tracking-tight">Merkei Mart</a>
 
-            <form action="{{ route('ads.index') }}" method="GET" class="flex-1 max-w-xl hidden sm:flex">
+            <form action="{{ route('search') }}" method="GET" class="flex-1 max-w-xl hidden sm:flex">
                 <input type="text" name="q" value="{{ request('q') }}" placeholder="සොයන්න... (Search ads)"
                        class="w-full rounded-l px-4 py-2 text-gray-800 focus:outline-none">
                 <button class="bg-yellow-400 text-brand-dark font-semibold px-4 rounded-r hover:bg-yellow-300">සොයන්න</button>
