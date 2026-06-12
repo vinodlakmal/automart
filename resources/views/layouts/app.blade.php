@@ -55,8 +55,65 @@
     </main>
 
     <footer class="bg-white border-t mt-12">
-        <div class="max-w-6xl mx-auto px-4 py-6 text-sm text-gray-500 text-center">
-            &copy; {{ date('Y') }} Merkei Mart.
+        @php $footerCategories = \App\Models\Category::roots()->active()->orderBy('sort_order')->get(); @endphp
+        <div class="max-w-6xl mx-auto px-4 pt-10 pb-6">
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-8 mb-8">
+
+                {{-- Browse --}}
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-800 uppercase tracking-wide mb-3">Browse</h3>
+                    <ul class="space-y-2 text-sm text-gray-500">
+                        <li><a href="{{ route('ads.index') }}" class="hover:text-brand hover:underline">All Listings</a></li>
+                        <li><a href="{{ route('ads.create') }}" class="hover:text-brand hover:underline">Post a Free Ad</a></li>
+                        @auth
+                            <li><a href="{{ route('ads.myAds') }}" class="hover:text-brand hover:underline">My Ads</a></li>
+                        @endauth
+                        <li><a href="{{ route('home') }}" class="hover:text-brand hover:underline">Home</a></li>
+                    </ul>
+                </div>
+
+                {{-- Categories --}}
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-800 uppercase tracking-wide mb-3">Categories</h3>
+                    <ul class="space-y-2 text-sm text-gray-500">
+                        @foreach($footerCategories as $cat)
+                            <li>
+                                <a href="{{ route('ads.index', ['category' => $cat->id]) }}"
+                                   class="hover:text-brand hover:underline">
+                                    {{ $cat->icon }} {{ $cat->name }}
+                                </a>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+
+                {{-- Account --}}
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-800 uppercase tracking-wide mb-3">Account</h3>
+                    <ul class="space-y-2 text-sm text-gray-500">
+                        @auth
+                            <li><a href="{{ route('ads.myAds') }}" class="hover:text-brand hover:underline">My Ads</a></li>
+                            <li><a href="{{ route('ads.create') }}" class="hover:text-brand hover:underline">Post an Ad</a></li>
+                            <li>
+                                <form action="{{ route('logout') }}" method="POST" class="inline">
+                                    @csrf
+                                    <button class="hover:text-brand hover:underline text-left">Sign Out</button>
+                                </form>
+                            </li>
+                        @else
+                            <li><a href="{{ route('login') }}" class="hover:text-brand hover:underline">Sign In</a></li>
+                            <li><a href="{{ route('register') }}" class="hover:text-brand hover:underline">Create Account</a></li>
+                            <li><a href="{{ route('ads.create') }}" class="hover:text-brand hover:underline">Post an Ad</a></li>
+                        @endauth
+                    </ul>
+                </div>
+            </div>
+
+            {{-- Bottom bar --}}
+            <div class="border-t pt-5 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-gray-400">
+                <span>&copy; {{ date('Y') }} Merkei Mart. All rights reserved.</span>
+                <span>Built with <a href="https://laravel.com" target="_blank" rel="noopener" class="hover:text-brand">Laravel</a> &amp; hosted on Docker.</span>
+            </div>
         </div>
     </footer>
     @stack('scripts')
