@@ -1,25 +1,27 @@
 @extends('layouts.app')
-@section('title', 'Saved Ads — Merkei Mart')
+@section('title', __('ui.favorites.title') . ' — Merkei Mart')
 
 @section('content')
 
 <div class="flex items-center justify-between mb-6">
     <div>
-        <h1 class="text-2xl font-bold">❤️ Saved Ads</h1>
-        <p class="text-sm text-gray-500 mt-0.5">{{ number_format($ads->total()) }} saved {{ Str::plural('ad', $ads->total()) }}</p>
+        <h1 class="text-2xl font-bold">{{ __('ui.favorites.title') }}</h1>
+        <p class="text-sm text-gray-500 mt-0.5">
+            {{ trans_choice('ui.favorites.count', $ads->total(), ['count' => number_format($ads->total())]) }}
+        </p>
     </div>
     <a href="{{ route('ads.index') }}"
-       class="text-sm text-brand hover:underline">Browse more →</a>
+       class="text-sm text-brand hover:underline">{{ __('ui.favorites.browse_more') }}</a>
 </div>
 
 @if($ads->isEmpty())
     <div class="bg-white rounded-xl shadow p-16 text-center">
         <p class="text-6xl mb-4">🤍</p>
-        <h2 class="text-xl font-semibold text-gray-700">No saved ads yet</h2>
-        <p class="text-gray-400 text-sm mt-2 mb-8">Tap the heart on any ad to save it here for later.</p>
+        <h2 class="text-xl font-semibold text-gray-700">{{ __('ui.favorites.empty_title') }}</h2>
+        <p class="text-gray-400 text-sm mt-2 mb-8">{{ __('ui.favorites.empty_sub') }}</p>
         <a href="{{ route('ads.index') }}"
            class="inline-block bg-brand text-white px-6 py-2.5 rounded-lg hover:bg-brand-light transition font-semibold">
-            Browse Listings
+            {{ __('ui.favorites.browse') }}
         </a>
     </div>
 @else
@@ -88,7 +90,7 @@
 
                     <p class="text-xs text-gray-400 mt-auto pt-2">
                         📍 {{ $ad->city?->name }}@if($ad->city && $ad->district), @endif{{ $ad->district?->name }}
-                        &middot; Saved {{ $ad->pivot->created_at?->diffForHumans() }}
+                        &middot; {{ __('ui.favorites.saved_ago', ['time' => $ad->pivot->created_at?->diffForHumans()]) }}
                     </p>
                 </a>
             </div>

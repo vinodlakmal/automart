@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'My Profile — Merkei Mart')
+@section('title', __('ui.profile.title') . ' — Merkei Mart')
 
 @section('content')
 @php
@@ -16,7 +16,7 @@
     </div>
     <div>
         <h1 class="text-2xl font-bold leading-tight">{{ $user->name }}</h1>
-        <p class="text-sm text-gray-500">Member since {{ $user->created_at->format('F Y') }}</p>
+        <p class="text-sm text-gray-500">{{ __('ui.profile.member_since', ['date' => $user->created_at->format('F Y')]) }}</p>
     </div>
 </div>
 
@@ -24,19 +24,19 @@
 <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
     <div class="bg-white rounded-xl shadow p-4 text-center">
         <p class="text-2xl font-bold text-brand">{{ $totalAds }}</p>
-        <p class="text-xs text-gray-500 mt-0.5">Total Ads</p>
+        <p class="text-xs text-gray-500 mt-0.5">{{ __('ui.profile.total_ads') }}</p>
     </div>
     <div class="bg-white rounded-xl shadow p-4 text-center">
         <p class="text-2xl font-bold text-green-600">{{ $activeAds }}</p>
-        <p class="text-xs text-gray-500 mt-0.5">Active</p>
+        <p class="text-xs text-gray-500 mt-0.5">{{ __('ui.profile.active') }}</p>
     </div>
     <div class="bg-white rounded-xl shadow p-4 text-center">
         <p class="text-2xl font-bold text-blue-600">{{ $soldAds }}</p>
-        <p class="text-xs text-gray-500 mt-0.5">Sold</p>
+        <p class="text-xs text-gray-500 mt-0.5">{{ __('ui.profile.sold') }}</p>
     </div>
     <div class="bg-white rounded-xl shadow p-4 text-center">
         <p class="text-2xl font-bold text-red-500">{{ $savedCount }}</p>
-        <p class="text-xs text-gray-500 mt-0.5">Saved Ads</p>
+        <p class="text-xs text-gray-500 mt-0.5">{{ __('ui.profile.saved_ads') }}</p>
     </div>
 </div>
 
@@ -47,7 +47,7 @@
 
         {{-- Profile details --}}
         <div class="bg-white rounded-xl shadow p-6">
-            <h2 class="text-lg font-semibold mb-5 pb-3 border-b">Profile Details</h2>
+            <h2 class="text-lg font-semibold mb-5 pb-3 border-b">{{ __('ui.profile.details') }}</h2>
 
             @if(session('profile_status'))
                 <div class="bg-green-50 border border-green-200 text-green-800 text-sm rounded-lg px-4 py-3 mb-5">
@@ -59,7 +59,7 @@
                 @csrf @method('PUT')
 
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Full Name <span class="text-red-500">*</span></label>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('ui.profile.full_name') }} <span class="text-red-500">*</span></label>
                     <input type="text" name="name" value="{{ old('name', $user->name) }}"
                            class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand
                                   @error('name') border-red-400 @enderror">
@@ -69,7 +69,7 @@
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Email Address <span class="text-red-500">*</span></label>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('ui.profile.email') }} <span class="text-red-500">*</span></label>
                     <input type="email" name="email" value="{{ old('email', $user->email) }}"
                            class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand
                                   @error('email') border-red-400 @enderror">
@@ -79,7 +79,7 @@
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('ui.profile.phone') }}</label>
                     <input type="tel" name="phone" value="{{ old('phone', $user->phone) }}"
                            placeholder="0771234567"
                            class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand
@@ -87,13 +87,13 @@
                     @error('phone')
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
-                    <p class="text-xs text-gray-400 mt-1">Sri Lankan format: 0XX XXXXXXX (10 digits)</p>
+                    <p class="text-xs text-gray-400 mt-1">{{ __('ui.profile.phone_hint') }}</p>
                 </div>
 
                 <div class="pt-2">
                     <button type="submit"
                             class="bg-brand text-white px-6 py-2.5 rounded-lg font-semibold hover:bg-brand-light transition">
-                        Save Changes
+                        {{ __('ui.profile.save_changes') }}
                     </button>
                 </div>
             </form>
@@ -101,7 +101,7 @@
 
         {{-- Change password --}}
         <div class="bg-white rounded-xl shadow p-6">
-            <h2 class="text-lg font-semibold mb-5 pb-3 border-b">Change Password</h2>
+            <h2 class="text-lg font-semibold mb-5 pb-3 border-b">{{ __('ui.profile.change_password') }}</h2>
 
             @if(session('password_status'))
                 <div class="bg-green-50 border border-green-200 text-green-800 text-sm rounded-lg px-4 py-3 mb-5">
@@ -113,7 +113,7 @@
                 @csrf @method('PUT')
 
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Current Password <span class="text-red-500">*</span></label>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('ui.profile.current_password') }} <span class="text-red-500">*</span></label>
                     <input type="password" name="current_password"
                            class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand
                                   @error('current_password') border-red-400 @enderror">
@@ -123,18 +123,18 @@
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">New Password <span class="text-red-500">*</span></label>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('ui.profile.new_password') }} <span class="text-red-500">*</span></label>
                     <input type="password" name="password"
                            class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand
                                   @error('password') border-red-400 @enderror">
                     @error('password')
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
-                    <p class="text-xs text-gray-400 mt-1">Minimum 8 characters.</p>
+                    <p class="text-xs text-gray-400 mt-1">{{ __('ui.profile.password_hint') }}</p>
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Confirm New Password <span class="text-red-500">*</span></label>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('ui.profile.confirm_password') }} <span class="text-red-500">*</span></label>
                     <input type="password" name="password_confirmation"
                            class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand">
                 </div>
@@ -142,7 +142,7 @@
                 <div class="pt-2">
                     <button type="submit"
                             class="bg-gray-800 text-white px-6 py-2.5 rounded-lg font-semibold hover:bg-gray-700 transition">
-                        Update Password
+                        {{ __('ui.profile.update_password') }}
                     </button>
                 </div>
             </form>

@@ -16,6 +16,15 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 
+// Locale switcher — sets session and redirects back.
+Route::get('/locale/{locale}', function (string $locale) {
+    $supported = ['en', 'si', 'ta'];
+    if (in_array($locale, $supported)) {
+        session(['locale' => $locale]);
+    }
+    return redirect()->back()->withInput();
+})->name('locale.switch')->where('locale', 'en|si|ta');
+
 // Marketplace homepage (category sections).
 Route::get('/', [HomeController::class, 'index'])->name('home');
 

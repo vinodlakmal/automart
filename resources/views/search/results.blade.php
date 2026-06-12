@@ -23,13 +23,17 @@
 <div class="mb-6">
     @if($q)
         <h1 class="text-2xl font-bold">
-            <span class="text-gray-400 font-normal text-lg">Results for</span>
+            <span class="text-gray-400 font-normal text-lg">{{ __('ui.search.results_for') }}</span>
             "{{ $q }}"
         </h1>
-        <p class="text-sm text-gray-500 mt-1">{{ number_format($results->total()) }} {{ Str::plural('listing', $results->total()) }} found</p>
+        <p class="text-sm text-gray-500 mt-1">
+            {{ trans_choice('ui.search.listing_found', $results->total(), ['count' => number_format($results->total())]) }}
+        </p>
     @else
-        <h1 class="text-2xl font-bold">All Listings</h1>
-        <p class="text-sm text-gray-500 mt-1">{{ number_format($results->total()) }} active {{ Str::plural('listing', $results->total()) }}</p>
+        <h1 class="text-2xl font-bold">{{ __('ui.search.all_listings') }}</h1>
+        <p class="text-sm text-gray-500 mt-1">
+            {{ trans_choice('ui.search.listing_found', $results->total(), ['count' => number_format($results->total())]) }}
+        </p>
     @endif
 </div>
 
@@ -48,19 +52,19 @@
             @endif
 
             <div>
-                <label class="block text-sm font-medium mb-1">සෙවුම (Search)</label>
+                <label class="block text-sm font-medium mb-1">{{ __('ui.search.search_label') }}</label>
                 <div class="flex">
                     <input type="text" name="q" value="{{ $q }}"
-                           placeholder="Keywords…"
+                           placeholder="{{ __('ui.search.keywords') }}"
                            class="w-full border rounded-l px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-brand">
-                    <button class="bg-brand text-white px-3 rounded-r hover:bg-brand-light text-sm">Go</button>
+                    <button class="bg-brand text-white px-3 rounded-r hover:bg-brand-light text-sm">{{ __('ui.search.go') }}</button>
                 </div>
             </div>
 
             <div>
-                <label class="block text-sm font-medium mb-1">ප්‍රවර්ගය</label>
+                <label class="block text-sm font-medium mb-1">{{ __('ui.ads.category') }}</label>
                 <select name="category" class="w-full border rounded px-3 py-2 text-sm">
-                    <option value="">All categories</option>
+                    <option value="">{{ __('ui.ads.all_categories') }}</option>
                     @foreach($categories as $cat)
                         @php $cnt = $hitCounts->get($cat->id, 0); @endphp
                         <option value="{{ $cat->id }}" @selected(request('category') == $cat->id)>
@@ -72,9 +76,9 @@
             </div>
 
             <div>
-                <label class="block text-sm font-medium mb-1">දිස්ත්‍රික්කය</label>
+                <label class="block text-sm font-medium mb-1">{{ __('ui.ads.district') }}</label>
                 <select name="district" class="w-full border rounded px-3 py-2 text-sm">
-                    <option value="">All districts</option>
+                    <option value="">{{ __('ui.ads.all_districts') }}</option>
                     @foreach($districts as $d)
                         <option value="{{ $d->id }}" @selected(request('district') == $d->id)>{{ $d->name }}</option>
                     @endforeach
@@ -82,7 +86,7 @@
             </div>
 
             <div>
-                <label class="block text-sm font-medium mb-1">මිල (Rs.)</label>
+                <label class="block text-sm font-medium mb-1">{{ __('ui.ads.price_range') }}</label>
                 <div class="flex gap-2">
                     <input type="number" name="min_price" value="{{ request('min_price') }}"
                            placeholder="Min" class="w-1/2 border rounded px-2 py-2 text-sm">
@@ -92,19 +96,19 @@
             </div>
 
             <div>
-                <label class="block text-sm font-medium mb-1">තත්ත්වය</label>
+                <label class="block text-sm font-medium mb-1">{{ __('ui.ads.condition') }}</label>
                 <select name="condition" class="w-full border rounded px-3 py-2 text-sm">
-                    <option value="">Any</option>
-                    <option value="new"  @selected(request('condition') === 'new')>New</option>
-                    <option value="used" @selected(request('condition') === 'used')>Used</option>
+                    <option value="">{{ __('ui.ads.any') }}</option>
+                    <option value="new"  @selected(request('condition') === 'new')>{{ __('ui.ads.new') }}</option>
+                    <option value="used" @selected(request('condition') === 'used')>{{ __('ui.ads.used') }}</option>
                 </select>
             </div>
 
             <button class="w-full bg-brand text-white py-2 rounded text-sm hover:bg-brand-light">
-                Apply Filters
+                {{ __('ui.search.apply') }}
             </button>
             <a href="{{ route('search', $q ? ['q' => $q] : []) }}"
-               class="block text-center text-xs text-gray-400 hover:underline">Clear filters</a>
+               class="block text-center text-xs text-gray-400 hover:underline">{{ __('ui.search.clear_filters') }}</a>
         </form>
     </aside>
 
@@ -135,10 +139,10 @@
                 @endif
             </span>
             <select id="sort-select" class="border rounded px-3 py-1.5 text-sm bg-white focus:outline-none focus:ring-1 focus:ring-brand">
-                <option value=""           @selected(! request('sort'))>Newest first</option>
-                <option value="price_asc"  @selected(request('sort') === 'price_asc')>Price: Low to High</option>
-                <option value="price_desc" @selected(request('sort') === 'price_desc')>Price: High to Low</option>
-                <option value="views"      @selected(request('sort') === 'views')>Most Viewed</option>
+                <option value=""           @selected(! request('sort'))>{{ __('ui.search.newest') }}</option>
+                <option value="price_asc"  @selected(request('sort') === 'price_asc')>{{ __('ui.search.price_low_high') }}</option>
+                <option value="price_desc" @selected(request('sort') === 'price_desc')>{{ __('ui.search.price_high_low') }}</option>
+                <option value="views"      @selected(request('sort') === 'views')>{{ __('ui.search.most_viewed') }}</option>
             </select>
         </div>
 
@@ -147,10 +151,10 @@
             <div class="bg-white rounded-xl shadow p-10 text-center">
                 <p class="text-4xl mb-3">🔍</p>
                 @if($q)
-                    <p class="text-lg font-semibold text-gray-700">No results for "{{ $q }}"</p>
-                    <p class="text-gray-400 text-sm mt-2 mb-6">Try different keywords, or browse a category below.</p>
+                    <p class="text-lg font-semibold text-gray-700">{{ __('ui.search.no_results_title', ['q' => $q]) }}</p>
+                    <p class="text-gray-400 text-sm mt-2 mb-6">{{ __('ui.search.no_results_sub') }}</p>
                 @else
-                    <p class="text-gray-500">No listings match your filters.</p>
+                    <p class="text-gray-500">{{ __('ui.search.no_match') }}</p>
                 @endif
 
                 <div class="grid grid-cols-3 sm:grid-cols-4 gap-3 mt-4 max-w-sm mx-auto">

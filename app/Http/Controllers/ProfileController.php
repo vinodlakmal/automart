@@ -43,7 +43,7 @@ class ProfileController extends Controller
 
         $user->update($validated);
 
-        return back()->with('profile_status', 'Profile updated successfully.');
+        return back()->with('profile_status', __('ui.profile.updated'));
     }
 
     public function updatePassword(Request $request): RedirectResponse
@@ -59,6 +59,6 @@ class ProfileController extends Controller
             'password' => Hash::make($request->input('password')),
         ]);
 
-        return back()->with('password_status', 'Password changed successfully.');
+        return back()->with('password_status', __('ui.profile.password_updated'));
     }
 }

@@ -10,7 +10,7 @@
 
 {{-- Breadcrumb --}}
 <nav class="text-sm text-gray-500 mb-4 flex items-center gap-1 flex-wrap">
-    <a href="{{ route('home') }}" class="hover:underline">මුල් පිටුව</a>
+    <a href="{{ route('home') }}" class="hover:underline">{{ __('ui.common.home') }}</a>
     <span>/</span>
     @if($ad->category?->parent)
         <a href="{{ route('ads.index', ['category' => $ad->category->parent_id]) }}" class="hover:underline">
@@ -83,7 +83,7 @@
             <div class="flex items-start justify-between gap-4">
                 <h1 class="text-2xl font-bold leading-snug">{{ $ad->title }}</h1>
                 @if($ad->is_featured)
-                    <span class="flex-shrink-0 bg-yellow-400 text-brand-dark text-xs font-bold px-2 py-1 rounded">TOP AD</span>
+                    <span class="flex-shrink-0 bg-yellow-400 text-brand-dark text-xs font-bold px-2 py-1 rounded">{{ __('ui.ads.top_ad') }}</span>
                 @endif
             </div>
 
@@ -98,18 +98,18 @@
             <div class="mt-4 flex items-end gap-3 flex-wrap">
                 <p class="text-3xl font-bold text-brand">
                     @if(! is_null($ad->price))
-                        Rs. {{ number_format($ad->price) }}
+                        {{ __('ui.common.rs') }} {{ number_format($ad->price) }}
                     @else
-                        <span class="text-xl text-gray-500 font-normal">කතා කර තීරණය කරගත හැක</span>
+                        <span class="text-xl text-gray-500 font-normal">{{ __('ui.ads.price_on_request') }}</span>
                     @endif
                 </p>
                 @if($ad->is_negotiable)
-                    <span class="text-sm bg-gray-100 text-gray-600 px-2 py-1 rounded mb-0.5">Negotiable</span>
+                    <span class="text-sm bg-gray-100 text-gray-600 px-2 py-1 rounded mb-0.5">{{ __('ui.ads.negotiable') }}</span>
                 @endif
                 @if($ad->condition)
                     <span class="text-sm px-2 py-1 rounded mb-0.5
                         {{ $ad->condition === 'new' ? 'bg-green-100 text-green-700' : 'bg-blue-100 text-blue-700' }}">
-                        {{ $ad->condition === 'new' ? 'Brand New' : 'Used' }}
+                        {{ $ad->condition === 'new' ? __('ui.ads.brand_new') : __('ui.ads.used') }}
                     </span>
                 @endif
             </div>
@@ -128,7 +128,7 @@
 
             {{-- Description --}}
             <div class="mt-5 pt-4 border-t">
-                <h2 class="font-semibold mb-2">විස්තරය (Description)</h2>
+                <h2 class="font-semibold mb-2">{{ __('ui.ad.description') }}</h2>
                 <p class="whitespace-pre-line text-gray-700 leading-relaxed">{{ $ad->description }}</p>
             </div>
 
@@ -137,13 +137,13 @@
                 <div class="mt-5 pt-4 border-t flex gap-3">
                     <a href="{{ route('ads.edit', $ad) }}"
                        class="px-4 py-2 rounded border hover:bg-gray-50 text-sm">
-                        ✏️ සංස්කරණය
+                        {{ __('ui.ad.edit') }}
                     </a>
                     <form action="{{ route('ads.destroy', $ad) }}" method="POST"
-                          onsubmit="return confirm('මෙම දැන්වීම ඉවත් කරන්නද?')">
+                          onsubmit="return confirm('{{ __('ui.ad.delete_confirm') }}')">
                         @csrf @method('DELETE')
                         <button class="px-4 py-2 rounded bg-red-600 text-white hover:bg-red-700 text-sm">
-                            🗑 ඉවත් කරන්න
+                            {{ __('ui.ad.delete') }}
                         </button>
                     </form>
                 </div>
@@ -156,9 +156,9 @@
 
         {{-- Seller contact --}}
         <div class="bg-white rounded-lg shadow p-5">
-            <h2 class="font-semibold mb-1">විකුණුම්කරු</h2>
+            <h2 class="font-semibold mb-1">{{ __('ui.ad.seller') }}</h2>
             <p class="text-gray-700 font-medium">{{ $ad->contact_name ?? $ad->user?->name }}</p>
-            <p class="text-xs text-gray-400 mb-4">Member since {{ $ad->user?->created_at?->format('M Y') }}</p>
+            <p class="text-xs text-gray-400 mb-4">{{ __('ui.ad.member_since', ['date' => $ad->user?->created_at?->format('M Y')]) }}</p>
 
             <a href="tel:{{ $ad->contact_phone }}"
                class="flex items-center justify-center gap-2 w-full bg-brand text-white py-2.5 rounded-lg font-semibold hover:bg-brand-light transition">
@@ -180,49 +180,49 @@
                         class="flex items-center justify-center gap-2 w-full mt-2 py-2.5 rounded-lg border-2 font-semibold transition
                                {{ $isFavorited ? 'border-red-400 bg-red-50 text-red-500' : 'border-gray-300 text-gray-600 hover:border-red-300 hover:text-red-400' }}">
                     <span id="fav-icon">{{ $isFavorited ? '❤️' : '🤍' }}</span>
-                    <span id="fav-label">{{ $isFavorited ? 'Saved' : 'Save Ad' }}</span>
+                    <span id="fav-label">{{ $isFavorited ? __('ui.ads.saved') : __('ui.ads.save_ad') }}</span>
                 </button>
             @else
                 <a href="{{ route('login') }}"
                    class="flex items-center justify-center gap-2 w-full mt-2 py-2.5 rounded-lg border-2 border-gray-300 text-gray-600 hover:border-red-300 hover:text-red-400 font-semibold transition">
-                    🤍 Save Ad
+                    🤍 {{ __('ui.ads.save_ad') }}
                 </a>
             @endauth
 
-            <p class="text-xs text-gray-400 mt-3 text-center">Merkei Mart හරහා දෙස් කළා යැයි කියන්න</p>
+            <p class="text-xs text-gray-400 mt-3 text-center">{{ __('ui.ad.via_merkei') }}</p>
         </div>
 
         {{-- Ad metadata --}}
         <div class="bg-white rounded-lg shadow p-4 text-sm divide-y">
             <div class="flex justify-between py-2">
-                <span class="text-gray-500">Ad ID</span>
+                <span class="text-gray-500">{{ __('ui.ad.ad_id') }}</span>
                 <span class="font-mono text-gray-700">#{{ $ad->id }}</span>
             </div>
             <div class="flex justify-between py-2">
-                <span class="text-gray-500">Posted</span>
+                <span class="text-gray-500">{{ __('ui.ad.posted') }}</span>
                 <span class="text-gray-700">{{ $ad->created_at->format('d M Y') }}</span>
             </div>
             @if($ad->expires_at)
                 <div class="flex justify-between py-2">
-                    <span class="text-gray-500">Expires</span>
+                    <span class="text-gray-500">{{ __('ui.ad.expires') }}</span>
                     <span class="text-gray-700">{{ $ad->expires_at->format('d M Y') }}</span>
                 </div>
             @endif
             <div class="flex justify-between py-2">
-                <span class="text-gray-500">Category</span>
+                <span class="text-gray-500">{{ __('ui.ad.category') }}</span>
                 <span class="text-gray-700">{{ $ad->category?->name }}</span>
             </div>
         </div>
 
         {{-- Safety tips --}}
         <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-            <h3 class="font-semibold text-yellow-800 mb-2 text-sm">⚠️ ආරක්ෂිතව ගනුදෙනු කරන්න</h3>
+            <h3 class="font-semibold text-yellow-800 mb-2 text-sm">{{ __('ui.ad.safety_title') }}</h3>
             <ul class="text-xs text-yellow-700 space-y-1.5">
-                <li>• Meet the seller in a safe, public place</li>
-                <li>• Inspect the item before handing over any money</li>
-                <li>• Never pay in advance or transfer money upfront</li>
-                <li>• Don't share your banking or financial details</li>
-                <li>• Be cautious of deals that seem too good to be true</li>
+                <li>• {{ __('ui.ad.safety_1') }}</li>
+                <li>• {{ __('ui.ad.safety_2') }}</li>
+                <li>• {{ __('ui.ad.safety_3') }}</li>
+                <li>• {{ __('ui.ad.safety_4') }}</li>
+                <li>• {{ __('ui.ad.safety_5') }}</li>
             </ul>
         </div>
 
@@ -232,10 +232,7 @@
 {{-- Related ads --}}
 @if($related->isNotEmpty())
 <section class="mt-10">
-    <h2 class="text-xl font-bold mb-4">
-        අදාළ දැන්වීම්
-        <span class="text-base font-normal text-gray-500">(Related ads)</span>
-    </h2>
+    <h2 class="text-xl font-bold mb-4">{{ __('ui.ad.related_ads') }}</h2>
     <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
         @foreach($related as $r)
             <a href="{{ route('ads.show', $r) }}"
