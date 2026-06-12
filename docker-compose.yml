@@ -23,7 +23,7 @@ services:
     container_name: automart-web
     restart: unless-stopped
     ports:
-      - "8080:80"            # http://173.249.28.120:8080  (change left number to use another host port)
+      - "8090:80"            # http://173.249.28.120:8080  (change left number to use another host port)
     volumes:
       - ./:/var/www/html
       - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
