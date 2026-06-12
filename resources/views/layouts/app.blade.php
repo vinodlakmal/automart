@@ -68,7 +68,8 @@
                         @auth
                             <li><a href="{{ route('ads.myAds') }}" class="hover:text-brand hover:underline">My Ads</a></li>
                         @endauth
-                        <li><a href="{{ route('home') }}" class="hover:text-brand hover:underline">Home</a></li>
+                        <li><a href="{{ route('about') }}" class="hover:text-brand hover:underline">About Us</a></li>
+                        <li><a href="{{ route('contact') }}" class="hover:text-brand hover:underline">Contact</a></li>
                     </ul>
                 </div>
 
