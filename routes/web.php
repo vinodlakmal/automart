@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdController;
+use App\Http\Controllers\Admin;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\HomeController;
@@ -73,3 +74,33 @@ Route::get('/api/categories/{category}/subcategories', [AdController::class, 'ge
 
 Route::get('/api/districts/{district}/cities', [AdController::class, 'getCities'])
     ->name('api.cities');
+
+/*
+|--------------------------------------------------------------------------
+| Admin panel  (/admin/*)
+|--------------------------------------------------------------------------
+*/
+Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
+
+    Route::get('/', [Admin\DashboardController::class, 'index'])->name('dashboard');
+
+    // Ads management
+    Route::get('/ads',                           [Admin\AdController::class, 'index'])->name('ads.index');
+    Route::post('/ads/{ad}/approve',             [Admin\AdController::class, 'approve'])->name('ads.approve');
+    Route::post('/ads/{ad}/reject',              [Admin\AdController::class, 'reject'])->name('ads.reject');
+    Route::post('/ads/{ad}/toggle-featured',     [Admin\AdController::class, 'toggleFeatured'])->name('ads.toggleFeatured');
+    Route::delete('/ads/{ad}',                   [Admin\AdController::class, 'destroy'])->name('ads.destroy');
+
+    // Users management
+    Route::get('/users',                         [Admin\UserController::class, 'index'])->name('users.index');
+    Route::post('/users/{user}/toggle-active',   [Admin\UserController::class, 'toggleActive'])->name('users.toggleActive');
+    Route::post('/users/{user}/toggle-admin',    [Admin\UserController::class, 'toggleAdmin'])->name('users.toggleAdmin');
+
+    // Categories
+    Route::get('/categories',                    [Admin\CategoryController::class, 'index'])->name('categories.index');
+    Route::post('/categories/{category}/toggle', [Admin\CategoryController::class, 'toggleActive'])->name('categories.toggle');
+
+    // Reports
+    Route::get('/reports',                       [Admin\ReportController::class, 'index'])->name('reports.index');
+    Route::post('/reports/{report}/resolve',     [Admin\ReportController::class, 'resolve'])->name('reports.resolve');
+});

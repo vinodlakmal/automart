@@ -29,6 +29,12 @@
 
             <nav class="flex items-center gap-3 text-sm">
                 @auth
+                    @if(auth()->user()->is_admin)
+                        <a href="{{ route('admin.dashboard') }}"
+                           class="bg-white/20 hover:bg-white/30 px-2 py-1 rounded text-xs font-semibold tracking-wide transition">
+                            ⚙ Admin
+                        </a>
+                    @endif
                     <a href="{{ route('favorites') }}" class="hover:underline" title="Saved Ads">❤️</a>
                     <a href="{{ route('ads.myAds') }}" class="hover:underline">මගේ දැන්වීම්</a>
                     <a href="{{ route('profile') }}"
