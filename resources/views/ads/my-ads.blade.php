@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'මගේ දැන්වීම් — ikman Clone')
+@section('title', 'මගේ දැන්වීම් — Merkei Mart')
 
 @section('content')
 @php

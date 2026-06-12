@@ -1,10 +1,10 @@
 @extends('layouts.app')
-@section('title', $ad->title . ' — ikman Clone')
+@section('title', $ad->title . ' — Merkei Mart')
 
 @section('content')
 @php
     $waNumber = $ad->contact_phone ? '94' . ltrim($ad->contact_phone, '0') : null;
-    $waText   = urlencode('Hi, I saw your ad "' . $ad->title . '" on ikman Clone.');
+    $waText   = urlencode('Hi, I saw your ad "' . $ad->title . '" on Merkei Mart.');
     $images   = $ad->images->pluck('url')->values();
 @endphp
 
@@ -173,7 +173,7 @@
                 </a>
             @endif
 
-            <p class="text-xs text-gray-400 mt-3 text-center">ikman Clone හරහා දෙස් කළා යැයි කියන්න</p>
+            <p class="text-xs text-gray-400 mt-3 text-center">Merkei Mart හරහා දෙස් කළා යැයි කියන්න</p>
         </div>
 
         {{-- Ad metadata --}}

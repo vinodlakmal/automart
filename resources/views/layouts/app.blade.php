@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', config('app.name', 'ikman Clone'))</title>
+    <title>@yield('title', config('app.name', 'Merkei Mart'))</title>
 
     {{-- Tailwind via CDN for zero-build dev. For production run `npm run build`
          and replace this with @vite(['resources/css/app.css','resources/js/app.js']). --}}
@@ -19,7 +19,7 @@
 <body class="bg-gray-100 text-gray-800 antialiased">
     <header class="bg-brand text-white shadow">
         <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
-            <a href="{{ route('home') }}" class="text-2xl font-bold tracking-tight">ikman<span class="text-yellow-300">.clone</span></a>
+            <a href="{{ route('home') }}" class="text-2xl font-bold tracking-tight">Merkei Mart</a>
 
             <form action="{{ route('ads.index') }}" method="GET" class="flex-1 max-w-xl hidden sm:flex">
                 <input type="text" name="q" value="{{ request('q') }}" placeholder="සොයන්න... (Search ads)"
@@ -56,7 +56,7 @@
 
     <footer class="bg-white border-t mt-12">
         <div class="max-w-6xl mx-auto px-4 py-6 text-sm text-gray-500 text-center">
-            &copy; {{ date('Y') }} ikman Clone — Laravel classified ads demo.
+            &copy; {{ date('Y') }} Merkei Mart.
         </div>
     </footer>
     @stack('scripts')

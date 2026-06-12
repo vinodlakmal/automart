@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'ඇතුල් වන්න — ikman Clone')
+@section('title', 'ඇතුල් වන්න — Merkei Mart')
 
 @section('content')
 <div class="max-w-md mx-auto">

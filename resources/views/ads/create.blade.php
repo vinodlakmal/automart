@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', ($ad ? 'දැන්වීම සංස්කරණය' : 'දැන්වීමක් පළ කරන්න') . ' — ikman Clone')
+@section('title', ($ad ? 'දැන්වීම සංස්කරණය' : 'දැන්වීමක් පළ කරන්න') . ' — Merkei Mart')
 
 @section('content')
 @php $editing = (bool) $ad; @endphp
