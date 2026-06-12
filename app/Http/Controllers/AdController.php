@@ -23,7 +23,7 @@ class AdController extends Controller implements HasMiddleware
     public static function middleware(): array
     {
         return [
-            new Middleware('auth', only: ['create', 'store', 'edit', 'update', 'destroy', 'myAds']),
+            new Middleware('auth', only: ['create', 'store', 'edit', 'update', 'destroy', 'myAds', 'markSold']),
         ];
     }
 
@@ -204,17 +204,40 @@ class AdController extends Controller implements HasMiddleware
     }
 
     /**
-     * The authenticated user's own ads.
+     * The authenticated user's own ads dashboard.
      */
     public function myAds(Request $request): View
     {
+        $validStatuses = ['active', 'pending', 'sold', 'expired', 'rejected'];
+        $status = in_array($request->query('status'), $validStatuses)
+            ? $request->query('status')
+            : null;
+
+        $stats = $request->user()
+            ->ads()
+            ->selectRaw('status, count(*) as count')
+            ->groupBy('status')
+            ->pluck('count', 'status');
+
         $ads = $request->user()
             ->ads()
-            ->with('primaryImage')
+            ->with(['primaryImage', 'category', 'city'])
+            ->when($status, fn ($q) => $q->where('status', $status))
             ->latest()
-            ->paginate(15);
+            ->paginate(15)
+            ->withQueryString();
 
-        return view('ads.my-ads', compact('ads'));
+        return view('ads.my-ads', compact('ads', 'stats'));
+    }
+
+    /**
+     * Quick-action: mark an ad as sold.
+     */
+    public function markSold(Ad $ad): RedirectResponse
+    {
+        $this->authorize('update', $ad);
+        $ad->update(['status' => 'sold']);
+        return back()->with('status', 'දැන්වීම "විකිණී ගිය" ලෙස සලකුණු කරන ලදී.');
     }
 
     /**

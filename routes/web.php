@@ -36,6 +36,7 @@ Route::get('/my-ads', [AdController::class, 'myAds'])
 // Full ad resource: index, create, store, show, edit, update, destroy.
 // Auth on the write actions is enforced inside AdController (HasMiddleware).
 Route::resource('ads', AdController::class);
+Route::patch('/ads/{ad}/sold', [AdController::class, 'markSold'])->name('ads.markSold');
 
 /*
 |--------------------------------------------------------------------------
