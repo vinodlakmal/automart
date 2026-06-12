@@ -109,19 +109,32 @@ class AdController extends Controller implements HasMiddleware
     {
         $this->authorize('view', $ad);
 
-        $ad->loadMissing(['images', 'attributes', 'category', 'district', 'city', 'user']);
+        $ad->loadMissing(['images', 'attributes', 'category.parent', 'district', 'city', 'user']);
 
         // Increment views without bumping updated_at.
         $ad->incrementQuietly('views');
 
+        // Same subcategory first; fall back to sibling subcategories under the same parent.
         $related = Ad::query()
             ->active()
             ->where('category_id', $ad->category_id)
             ->whereKeyNot($ad->id)
-            ->with('primaryImage')
+            ->with(['primaryImage', 'city'])
             ->latest()
             ->take(6)
             ->get();
+
+        if ($related->isEmpty() && $ad->category?->parent_id) {
+            $siblingIds = \App\Models\Category::where('parent_id', $ad->category->parent_id)->pluck('id');
+            $related = Ad::query()
+                ->active()
+                ->whereIn('category_id', $siblingIds)
+                ->whereKeyNot($ad->id)
+                ->with(['primaryImage', 'city'])
+                ->latest()
+                ->take(6)
+                ->get();
+        }
 
         return view('ads.show', compact('ad', 'related'));
     }
